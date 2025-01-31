@@ -1,0 +1,39 @@
+name: React App CI/CD
+
+# Trigger the workflow on push and pull request to the main branch
+on:
+  push:
+    branches:
+      - main        # Trigger on push to the main branch
+      - develop     # Optionally, trigger on other branches as well
+  pull_request:
+    branches:
+      - main        # Trigger on pull requests targeting the main branch
+
+# Define jobs that will run in parallel or sequentially
+jobs:
+  build:
+    runs-on: self-hosted   # You can also use windows-latest or macos-latest depending on your needs
+    
+    steps:
+      # Step 1: Checkout the code from the repository
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Step 2: Set up Node.js (specify version compatible with your project)
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'    # Specify the version of Node.js (adjust as needed)
+      
+      # Step 3: Install project dependencies
+      - name: Install dependencies
+        run: |
+          npm install
+
+      # Step 4: Run tests
+      - name: Run tests
+        run: |
+          npm test -- --coverage   # Adjust test command based on your setup (e.g., using jest)
+
+     
